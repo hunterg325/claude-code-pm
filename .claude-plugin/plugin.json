@@ -1,0 +1,11 @@
+{
+  "name": "claude-code-pm",
+  "version": "0.1.0",
+  "description": "Autonomous Project Manager for Claude Code. Orchestrates parallel worker sessions to execute Linear tasks through a structured lifecycle: fetch, spawn, monitor, verify, review, merge.",
+  "author": {
+    "name": "Hunter Gemmer",
+    "email": "huntergemmer@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": ["project-management", "orchestration", "linear", "parallel-workers", "automation"]
+}

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.claude/pm-state.json
+.claude/pm-config.yaml
+.claude/*.local.md
