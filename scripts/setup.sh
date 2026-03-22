@@ -28,7 +28,7 @@ fi
 echo ""
 echo "Next steps:"
 echo "  1. Edit .claude/pm-config.yaml — set your Linear project name"
-echo "  2. Ensure claude-peers broker is running (cd ~/claude-peers && bun run src/index.ts)"
+echo "  2. Ensure claude-peers MCP broker is running — clone it from https://github.com/louislva/claude-peers-mcp"
 echo "  3. Ensure Linear MCP is configured in Claude Code"
 echo "  4. Run /pm:start to launch the orchestration loop"
 echo ""

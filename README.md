@@ -14,12 +14,10 @@ Claude Code PM turns a persistent Claude Code session into an autonomous project
 - Creates PRs, monitors CI, iterates on review feedback, and signals merge-readiness
 - Notifies you when human judgment is needed
 
-You observe from an architectural perspective and merge PRs.
-
 ## Prerequisites
 
 - [Claude Code CLI](https://docs.claude.ai/cli) with channels support (`--dangerously-load-development-channels`)
-- [claude-peers](https://github.com/anthropics/claude-peers) broker running on localhost:7899
+- [claude-peers MCP](https://github.com/louislva/claude-peers-mcp) broker running on localhost:7899
 - [Linear MCP](https://docs.claude.ai/integrations/linear) configured in Claude Code
 - [GitHub CLI](https://cli.github.com/) (`gh`) authenticated
 - macOS with Terminal.app (for worker tab spawning)
