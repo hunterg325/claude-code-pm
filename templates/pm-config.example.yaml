@@ -5,6 +5,13 @@
 # has sensible defaults.
 
 # ──────────────────────────────────────────────
+# Target repository
+# ──────────────────────────────────────────────
+# REQUIRED — absolute path to the repo where workers execute tasks.
+# Workers are spawned as interactive sessions in this directory.
+target_repo: "/absolute/path/to/your/project"
+
+# ──────────────────────────────────────────────
 # Linear integration
 # ──────────────────────────────────────────────
 linear:
