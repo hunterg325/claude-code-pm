@@ -44,9 +44,22 @@ cd "$1"
 echo "=== PM Worker $2 ==="
 # Use expect to auto-accept the dev channels confirmation prompt.
 # The TUI reads raw keypresses from the tty, so piping won't work.
-# We wait 3 seconds for the prompt to render, then send Enter.
+# We set the pty size to match the real terminal and propagate SIGWINCH
+# so Claude's TUI renders correctly through expect's pty layer.
 expect -c "
-    spawn claude --dangerously-skip-permissions --dangerously-load-development-channels server:claude-peers
+    # Match pty size to actual terminal
+    set rows [exec tput lines]
+    set cols [exec tput cols]
+    spawn -noecho claude --dangerously-skip-permissions --dangerously-load-development-channels server:claude-peers
+    stty rows \$rows columns \$cols < \$spawn_out(slave,name)
+
+    # Propagate terminal resizes to the pty
+    trap {
+        set rows [exec tput lines]
+        set cols [exec tput cols]
+        stty rows \$rows columns \$cols < \$spawn_out(slave,name)
+    } WINCH
+
     sleep 3
     send \"\r\"
     interact
