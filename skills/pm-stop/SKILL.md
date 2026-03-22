@@ -18,7 +18,7 @@ allowed-tools:
    - Log the abort
 3. For each active VO agent:
    - Send abort message
-4. Wait up to 30 seconds for workers to acknowledge (check_messages)
+4. Wait up to 30 seconds for workers to acknowledge (responses arrive as <channel> events)
 5. Update pm-state.json:
    - Move active workers to a `shutdown_pending` state
    - Record shutdown timestamp
