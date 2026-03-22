@@ -1,0 +1,119 @@
+# .claude/pm-config.yaml — Project-specific PM configuration
+#
+# Copy this file to .claude/pm-config.yaml in your project root and
+# customize it. Only `linear.project` is required; everything else
+# has sensible defaults.
+
+# ──────────────────────────────────────────────
+# Target repository
+# ──────────────────────────────────────────────
+# REQUIRED — absolute path to the repo where workers execute tasks.
+# Workers are spawned as interactive sessions in this directory.
+target_repo: "/absolute/path/to/your/project"
+
+# ──────────────────────────────────────────────
+# Linear integration
+# ──────────────────────────────────────────────
+linear:
+  # REQUIRED — the Linear project name to pull tasks from.
+  project: "My Project"
+
+  # Linear team identifier. Defaults to the project's team if omitted.
+  team: "Engineering"
+
+  # Maps internal task statuses to your Linear workflow state names.
+  # Adjust these to match the exact status names in your Linear project.
+  status_map:
+    ready: "Todo"           # Tasks the PM will pick up
+    in_progress: "In Progress"  # Worker has been spawned
+    in_review: "In Review"      # VO is reviewing / PR open
+    done: "Done"                # Merged and complete
+
+# ──────────────────────────────────────────────
+# Worker management
+# ──────────────────────────────────────────────
+workers:
+  # Maximum number of concurrent worker agents.
+  # Each worker is a separate Claude Code session, so keep this
+  # within your machine's resource limits.
+  max_concurrent: 5          # default: 5
+
+  # How long (in minutes) a worker is allowed to run before the PM
+  # treats it as timed-out and escalates.
+  timeout_minutes: 45        # default: 45
+
+# ──────────────────────────────────────────────
+# Verification Officer settings
+# ──────────────────────────────────────────────
+verification:
+  # Maximum number of review feedback loops between VO and Worker
+  # before the VO escalates to the PM.
+  max_review_loops: 3        # default: 3
+
+  # Maximum number of CI retries after a failure before escalating.
+  max_ci_retries: 3          # default: 3
+
+  # If true, tasks where the worker's self-check passes all criteria
+  # can be auto-approved without full VO review. Use with caution.
+  auto_approve_self_check: false  # default: false
+
+# ──────────────────────────────────────────────
+# Project context docs
+# ──────────────────────────────────────────────
+# These files are injected into worker prompts so they understand
+# the project's architecture and conventions. Paths are relative
+# to the project root.
+project_docs:
+  - path: "DESIGN.md"
+    description: "System architecture and design decisions"
+  # - path: "CONVENTIONS.md"
+  #   description: "Code style and naming conventions"
+  # - path: "API.md"
+  #   description: "API endpoint reference"
+
+# ──────────────────────────────────────────────
+# Worker templates
+# ──────────────────────────────────────────────
+# Maps Linear labels (or task categories) to the verification
+# commands workers should run during self-check. The PM picks the
+# matching template based on task labels.
+worker_templates:
+  backend:
+    verify: ["npm test", "npm run lint", "npm run build"]
+  frontend:
+    verify: ["npm test", "npm run lint"]
+  # docs:
+  #   verify: ["npm run lint:docs"]
+
+# ──────────────────────────────────────────────
+# Notification provider
+# ──────────────────────────────────────────────
+# How the PM reports status updates and escalations.
+#   stdout   — print to the terminal (default, good for dev)
+#   discord  — POST to a Discord webhook (set DISCORD_WEBHOOK_URL env var)
+#   slack    — POST to a Slack webhook (set SLACK_WEBHOOK_URL env var)
+#   custom   — run a custom shell script
+notification:
+  provider: stdout           # "stdout" | "discord" | "slack" | "custom"
+
+  # Uncomment for discord/slack:
+  # webhook_url_env: DISCORD_WEBHOOK_URL   # env var holding the webhook URL
+
+  # Uncomment for custom provider:
+  # script: .claude/my-notify.sh           # path to notification script
+
+# ──────────────────────────────────────────────
+# Git conventions
+# ──────────────────────────────────────────────
+git:
+  # Branch that PRs target.
+  base_branch: main          # default: main
+
+  # Prefix for worker branches.
+  branch_prefix: "task/"     # default: "task/"
+
+  # Branch name template. Available variables:
+  #   {prefix}  — the branch_prefix above
+  #   {task_id} — Linear issue ID (e.g. ENG-142)
+  #   {slug}    — kebab-case title slug
+  branch_format: "{prefix}{task_id}-{slug}"
