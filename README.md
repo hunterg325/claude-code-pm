@@ -28,7 +28,7 @@ You observe from an architectural perspective and merge PRs.
 
 ```bash
 # From source
-git clone https://github.com/huntergemmer/claude-code-pm
+git clone https://github.com/hunterg325/claude-code-pm
 claude plugin add ./claude-code-pm
 ```
 
