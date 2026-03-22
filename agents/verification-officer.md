@@ -14,7 +14,6 @@ tools:
   - Glob
   - Grep
   - mcp__claude-peers__send_message
-  - mcp__claude-peers__check_messages
   - mcp__claude-peers__list_peers
 ---
 

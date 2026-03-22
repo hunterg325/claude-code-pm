@@ -28,14 +28,14 @@ REVIEW PIPELINE:
    - Report to PM: { type: "vo_started", task_id, vo_peer_id }
 
 4. MONITOR CI
-   - Poll: gh pr checks {pr_number} --watch (or periodic gh pr checks)
+   - Run: gh pr checks {pr_number} --watch (this blocks until checks complete)
    - On failure → send ci_failure to worker with log URL and failure summary
-   - Wait for worker fix, then re-verify from step 1
+   - Wait for worker fix (arrives as <channel source="claude-peers"> event), then re-verify from step 1
 
 5. HANDLE REVIEW COMMENTS
    - Check: gh api repos/{owner}/{repo}/pulls/{pr_number}/comments
    - If comments exist → send review_feedback to worker
-   - Wait for fix, re-verify
+   - Wait for fix (arrives as <channel source="claude-peers"> event), re-verify
 
 6. APPROVE
    - All self-checks pass + CI green + no unresolved comments

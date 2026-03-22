@@ -49,11 +49,18 @@ ORCHESTRATION LOOP:
 6. Compose task_assignment message from template + Linear data + project docs
 7. Send assignment to worker via send_message
 8. Update Linear status → In Progress, post comment with worker peer_id
-9. Monitor: periodically check_messages for worker reports
+9. Wait for worker messages — they arrive automatically as <channel source="claude-peers"> events. React immediately when they arrive. Do NOT poll with check_messages.
 10. Handle questions: answer from project docs or escalate to developer
 11. On task_complete: delegate to VO agent for review, PR, CI
 12. On vo_approved: notify developer, transition to MERGE_WAIT
 13. Persist state and repeat from step 2
+
+MESSAGE DELIVERY:
+Messages from workers and the VO arrive automatically as <channel source="claude-peers">
+events inline in the conversation. When you see one, RESPOND IMMEDIATELY — pause any
+planning or waiting and handle the incoming message. Do NOT call check_messages in a
+loop to poll for updates. The only valid use of check_messages is on startup during
+crash recovery to retrieve messages that arrived while the PM was down.
 
 WORKER TRACKING:
 Track which worker peer_id is assigned to which task_id. An idle worker is one

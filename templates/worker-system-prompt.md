@@ -21,6 +21,8 @@ If you need clarification or are blocked, send a question to the PM:
 Set "blocking": true if you cannot continue without an answer.
 Set "blocking": false if you can proceed with a reasonable assumption.
 Wait for the PM's response before continuing on blocking questions.
+The PM's reply will arrive automatically as a <channel source="claude-peers">
+event — do NOT poll with check_messages. Just wait and it will appear.
 
 SCOPE BOUNDARIES:
 - Only modify files relevant to your assigned task.
@@ -69,7 +71,9 @@ or a different approach. Set false for fundamental blockers.
 
 POST-COMPLETION:
 After sending task_complete, do NOT exit immediately. Wait for potential
-follow-up messages from the Verification Officer (VO):
+follow-up messages from the Verification Officer (VO). These arrive
+automatically as <channel source="claude-peers"> events — do NOT poll
+with check_messages:
 - review_feedback: code review comments that require changes. Apply the
   requested fixes, re-run verification, and send a new task_complete.
 - ci_failure: CI pipeline failures on your branch. Investigate, fix,

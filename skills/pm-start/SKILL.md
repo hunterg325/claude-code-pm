@@ -10,6 +10,7 @@ allowed-tools:
   - mcp__claude-peers__list_peers
   - mcp__claude-peers__send_message
   - mcp__claude-peers__set_summary
+  # check_messages only needed for crash recovery on startup
   - mcp__claude-peers__check_messages
   - mcp__claude_ai_Linear__list_issues
   - mcp__claude_ai_Linear__save_issue
