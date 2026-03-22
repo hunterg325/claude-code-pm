@@ -41,7 +41,10 @@ create_launcher() {
     cat > "$launcher" <<'SCRIPT'
 #!/bin/bash
 cd "$1"
-echo "=== PM Worker $2 ==="
+echo "=== DEV $2 ==="
+# Re-set tab title after Claude initializes (it overrides the title on startup).
+# This background process writes to the tab's tty, not expect's pty.
+(sleep 10 && printf '\033]1;DEV %s\007' "$2" && printf '\033]2;DEV %s\007' "$2") &
 # Use expect to auto-accept the dev channels confirmation prompt.
 # The TUI reads raw keypresses from the tty, so piping won't work.
 # We wait 3 seconds for the prompt to render, then send Enter.
@@ -79,7 +82,7 @@ EOF
 
 spawn_in_terminal() {
     local worker_num="$1"
-    local tab_title="PM Worker $worker_num"
+    local tab_title="DEV $worker_num"
     local launcher
     launcher="$(create_launcher "$worker_num")"
 
